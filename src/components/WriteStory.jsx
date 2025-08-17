@@ -33,10 +33,10 @@ const WriteStory = ({ onReturn }) => {
   // 语音相关状态
   const [chatMode, setChatMode] = useState('voice'); // 'text' or 'voice' - 默认为语音模式
   const [isRecording, setIsRecording] = useState(false);
-  const [setMicError] = useState('');
-  const [setTranscribedText] = useState('');
+  const [micError, setMicError] = useState('');
+  const [transcribedText, setTranscribedText] = useState('');
   const [isContinuousListening, setIsContinuousListening] = useState(false);
-  const [setVadState] = useState({ isListening: false, isSpeaking: false });
+  const [vadState, setVadState] = useState({ isListening: false, isSpeaking: false });
   
   // 语音播放相关状态
   const [isPlaying, setIsPlaying] = useState(false);
@@ -164,7 +164,7 @@ const WriteStory = ({ onReturn }) => {
     if (!checkAuthWithRedirect()) return;
     setIsRegenerating(true);
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/regenerate-text`, {
         text: newContent,
         currentContent: formData.thoughts
@@ -973,6 +973,11 @@ const WriteStory = ({ onReturn }) => {
                 </form>
               ) : ( 
                 <div className="voice-buttons">
+                  {micError && (
+                    <div className="error-message">
+                      {micError}
+                    </div>
+                  )}
                   <button 
                     className={`voice-button ${isContinuousListening ? 'listening' : ''}`} 
                     onClick={handleMicrophoneRequest}

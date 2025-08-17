@@ -40,7 +40,7 @@ const DiaryBrowser = () => {
   const loadDiaries = async () => {
     try {
       setIsLoading(true);
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/conversations`, {
         headers: getAuthHeaders()
       });
@@ -62,7 +62,7 @@ const DiaryBrowser = () => {
     setSharingId(diary.id);
     
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/community/posts`, {
         title: diary.title,
         content: diary.content,
@@ -181,7 +181,7 @@ const DiaryBrowser = () => {
     }
 
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       await axios.delete(`${API_BASE_URL}/api/conversations/${diaryId}`, {
         headers: getAuthHeaders()
       });
@@ -341,6 +341,7 @@ const DiaryBrowser = () => {
     setIsSaving(true);
     
     try {
+      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.put(
         `${API_BASE_URL}/api/conversations/${editingDiary.id}`,
         {
