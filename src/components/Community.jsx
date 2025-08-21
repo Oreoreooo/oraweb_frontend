@@ -391,9 +391,9 @@ const Community = ({ onReturn }) => {
                       <h3>{diary.title}</h3>
                       <p className="diary-date">{formatDate(diary.date)}</p>
                       <p className="diary-excerpt">
-                        {diary.content.length > 150 
+                        {diary.content && diary.content.length > 150 
                           ? diary.content.substring(0, 150) + '...' 
-                          : diary.content}
+                          : diary.content || 'No content available'}
                       </p>
                     </div>
                     <button 
@@ -437,9 +437,9 @@ const Community = ({ onReturn }) => {
                         </div>
                       </div>
                       <div className="post-content">
-                        {post.content.length > 300 
+                        {post.content && post.content.length > 300 
                           ? post.content.substring(0, 300) + '...' 
-                          : post.content}
+                          : post.content || 'No content available'}
                       </div>
                     </div>
                   ))}
@@ -468,9 +468,9 @@ const Community = ({ onReturn }) => {
                         </div>
                       </div>
                       <div className="post-content">
-                        {post.content.length > 300 
+                        {post.content && post.content.length > 300 
                           ? post.content.substring(0, 300) + '...' 
-                          : post.content}
+                          : post.content || 'No content available'}
                       </div>
                       <div className="post-footer">
                         <span className={`post-status ${post.is_public ? 'public' : 'private'}`}>

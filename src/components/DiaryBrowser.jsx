@@ -562,9 +562,9 @@ const DiaryBrowser = () => {
                   <div className="entry-content">
                     <h3 className="entry-title">{diary.title}</h3>
                     <p className="entry-preview">
-                      {diary.content.length > 200 
+                      {diary.content && diary.content.length > 200 
                         ? diary.content.substring(0, 200) + '...'
-                        : diary.content
+                        : diary.content || 'No content available'
                       }
                     </p>
                   </div>
@@ -642,9 +642,9 @@ const DiaryBrowser = () => {
                               <div className="timeline-entry-content">
                                 <h4 className="timeline-title">{diary.title}</h4>
                                 <p className="timeline-preview">
-                                  {diary.content.length > 150 
+                                  {diary.content && diary.content.length > 150 
                                     ? diary.content.substring(0, 150) + '...'
-                                    : diary.content
+                                    : diary.content || 'No content available'
                                   }
                                 </p>
                                 {diary.messages && diary.messages.length > 1 && (
