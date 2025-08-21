@@ -4,7 +4,7 @@ const isDevelopment = process.env.REACT_APP_ENVIRONMENT === 'development' || pro
 // 不同环境的API URL
 const API_URLS = {
   development: 'http://localhost:5000',
-  production: 'https://91a448f40e9e.ngrok-free.app'
+  production: 'https://854c8e371cc0.ngrok-free.app'
 };
 
 // 自动选择API URL
