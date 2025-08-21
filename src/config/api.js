@@ -1,5 +1,23 @@
 // API 配置
-export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'https://2eb9715e7328.ngrok-free.app';
+const isDevelopment = process.env.REACT_APP_ENVIRONMENT === 'development' || process.env.NODE_ENV === 'development';
+
+// 不同环境的API URL
+const API_URLS = {
+  development: 'http://localhost:5000',
+  production: 'https://91a448f40e9e.ngrok-free.app'
+};
+
+// 自动选择API URL
+export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 
+                            (isDevelopment ? API_URLS.development : API_URLS.production);
+
+// 手动切换API URL的函数（可选）
+export const getApiUrl = (forceProduction = false) => {
+  if (forceProduction) {
+    return process.env.REACT_APP_API_BASE_URL_PROD || API_URLS.production;
+  }
+  return API_BASE_URL;
+};
 
 // API 端点
 export const API_ENDPOINTS = {

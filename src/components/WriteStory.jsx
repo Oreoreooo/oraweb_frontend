@@ -4,6 +4,7 @@ import './WriteStory.css';
 import axios from 'axios';
 import { getAccessToken, handleApiError, getAuthHeaders, checkAuthWithRedirect, getUserInfo } from '../utils/auth';
 import VoiceActivityDetector from '../utils/voiceActivityDetector';
+import { API_BASE_URL } from '../config/api';
 
 const WriteStory = ({ onReturn }) => {
   // 保存初始diary内容用于对比
@@ -382,7 +383,6 @@ const WriteStory = ({ onReturn }) => {
     try {
       const currentDateTime = new Date().toISOString();
       
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/conversations`, {
         title: title,
         content: contentToSave,
@@ -437,7 +437,6 @@ const WriteStory = ({ onReturn }) => {
     
     try {
       // Call our backend API with voice response option
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/chat`, {
         messages: updatedMessages,
         conversationId: conversationId,

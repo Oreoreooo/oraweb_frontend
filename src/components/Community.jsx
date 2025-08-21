@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './Community.css';
 import axios from 'axios';
 import { handleApiError, getAuthHeaders, checkAuthWithRedirect, getUserInfo } from '../utils/auth';
+import { API_BASE_URL } from '../config/api';
 
 const Community = ({ onReturn }) => {
   const [posts, setPosts] = useState([]);
@@ -24,7 +25,6 @@ const Community = ({ onReturn }) => {
     
     setIsLoading(true);
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/community/posts`, {
         headers: getAuthHeaders()
       });
@@ -58,7 +58,6 @@ const Community = ({ onReturn }) => {
     
     setIsLoading(true);
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/community/my-posts`, {
         headers: getAuthHeaders()
       });
@@ -82,7 +81,6 @@ const Community = ({ onReturn }) => {
     if (!checkAuthWithRedirect()) return;
     
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/conversations`, {
         headers: getAuthHeaders()
       });
@@ -120,7 +118,6 @@ const Community = ({ onReturn }) => {
     
     setIsLoading(true);
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/community/posts`, {
         title: newPost.title,
         content: newPost.content,
@@ -177,7 +174,6 @@ const Community = ({ onReturn }) => {
     
     setIsLoading(true);
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/community/posts`, {
         title: diary.title,
         content: diary.content,
@@ -239,7 +235,6 @@ const Community = ({ onReturn }) => {
     
     setIsLoading(true);
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       await axios.delete(`${API_BASE_URL}/api/community/posts/${postId}`, {
         headers: getAuthHeaders()
       });
