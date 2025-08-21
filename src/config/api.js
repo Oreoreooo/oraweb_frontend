@@ -1,4 +1,6 @@
 // API 配置
+import axios from 'axios';
+
 const isDevelopment = process.env.REACT_APP_ENVIRONMENT === 'development' || process.env.NODE_ENV === 'development';
 
 // 不同环境的API URL
@@ -18,6 +20,16 @@ export const getApiUrl = (forceProduction = false) => {
   }
   return API_BASE_URL;
 };
+
+// 创建带有CORS headers的axios实例
+export const apiClient = axios.create({
+  baseURL: API_BASE_URL,
+  headers: {
+    'Content-Type': 'application/json',
+    'ngrok-skip-browser-warning': 'true'
+  },
+  timeout: 10000
+});
 
 // API 端点
 export const API_ENDPOINTS = {
