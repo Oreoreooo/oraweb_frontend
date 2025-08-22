@@ -3,6 +3,12 @@ import axios from 'axios';
 
 const isDevelopment = process.env.REACT_APP_ENVIRONMENT === 'development' || process.env.NODE_ENV === 'development';
 
+console.log('🔧 API配置加载中...');
+console.log('🌍 NODE_ENV:', process.env.NODE_ENV);
+console.log('🌍 REACT_APP_ENVIRONMENT:', process.env.REACT_APP_ENVIRONMENT);
+console.log('🌍 REACT_APP_API_BASE_URL:', process.env.REACT_APP_API_BASE_URL);
+console.log('📊 isDevelopment:', isDevelopment);
+
 // 不同环境的API URL
 const API_URLS = {
   development: 'http://localhost:5000',
@@ -12,6 +18,8 @@ const API_URLS = {
 // 自动选择API URL
 export const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 
                             (isDevelopment ? API_URLS.development : API_URLS.production);
+
+console.log('🔗 最终API Base URL:', API_BASE_URL);
 
 // 手动切换API URL的函数（可选）
 export const getApiUrl = (forceProduction = false) => {

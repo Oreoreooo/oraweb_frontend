@@ -38,21 +38,45 @@ const DiaryBrowser = () => {
   }, []);
 
   const loadDiaries = async () => {
+    console.log('🚀 开始加载diary数据...');
     try {
       setIsLoading(true);
       const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
+      console.log('📡 API请求地址:', `${API_BASE_URL}/api/conversations`);
+      console.log('🔐 请求头信息:', getAuthHeaders());
+      
       const response = await axios.get(`${API_BASE_URL}/api/conversations`, {
         headers: getAuthHeaders()
       });
       
-      setDiaries(response.data);
+      console.log('✅ API响应成功!');
+      console.log('📊 响应状态:', response.status);
+      console.log('📊 响应数据:', response.data);
+      console.log('📊 数据类型:', typeof response.data);
+      console.log('📊 是否为数组:', Array.isArray(response.data));
+      console.log('📊 数据长度:', response.data?.length);
+      
+      if (response.data && response.data.length > 0) {
+        console.log('📊 第一条diary数据:', response.data[0]);
+        console.log('📊 第一条数据的字段:', Object.keys(response.data[0]));
+      }
+      
+      setDiaries(response.data || []);
       setError('');
+      console.log('✅ Diary数据设置完成');
     } catch (error) {
-      console.error('Error loading diaries:', error);
+      console.error('❌ 加载diary失败:', error);
+      console.error('❌ 错误详情:', {
+        status: error.response?.status,
+        statusText: error.response?.statusText,
+        data: error.response?.data,
+        message: error.message
+      });
       handleApiError(error);
       setError('Failed to load diaries');
     } finally {
       setIsLoading(false);
+      console.log('🔄 加载状态重置完成');
     }
   };
 

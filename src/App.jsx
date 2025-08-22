@@ -10,6 +10,10 @@ import Community from './components/Community';
 import { checkAuthWithRedirect } from './utils/auth';
 import './App.css';
 
+console.log('🎯 App.jsx 正在加载...');
+console.log('🌍 当前环境:', process.env.NODE_ENV);
+console.log('📅 当前时间:', new Date().toLocaleString());
+
 // 受保护的路由组件
 const ProtectedRoute = ({ children }) => {
   const [shouldRender, setShouldRender] = useState(false);
