@@ -27,7 +27,8 @@ const Community = ({ onReturn }) => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/community/posts`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       setPosts(response.data.posts || []);
     } catch (error) {
@@ -61,7 +62,8 @@ const Community = ({ onReturn }) => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/community/my-posts`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       setUserPosts(response.data.posts || []);
     } catch (error) {
@@ -85,7 +87,8 @@ const Community = ({ onReturn }) => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/conversations`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       setUserDiaries(response.data.conversations || []);
     } catch (error) {
@@ -127,7 +130,8 @@ const Community = ({ onReturn }) => {
         content: newPost.content,
         isPublic: newPost.isPublic
       }, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       if (response.data.success) {
@@ -186,7 +190,8 @@ const Community = ({ onReturn }) => {
         sourceType: 'diary',
         sourceId: diary.id
       }, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       if (response.data.success) {
@@ -242,7 +247,8 @@ const Community = ({ onReturn }) => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       await axios.delete(`${API_BASE_URL}/api/community/posts/${postId}`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       // 刷新帖子列表

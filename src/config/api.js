@@ -29,15 +29,19 @@ export const getApiUrl = (forceProduction = false) => {
   return API_BASE_URL;
 };
 
-// 创建带有CORS headers的axios实例
+// 创建带有CORS headers和credentials的axios实例
 export const apiClient = axios.create({
   baseURL: API_BASE_URL,
   headers: {
     'Content-Type': 'application/json',
     'ngrok-skip-browser-warning': 'true'
   },
-  timeout: 10000
+  timeout: 10000,
+  withCredentials: true // 添加 credentials 支持
 });
+
+// 配置默认的 axios 实例也支持 credentials
+axios.defaults.withCredentials = true;
 
 // API 端点
 export const API_ENDPOINTS = {

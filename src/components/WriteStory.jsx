@@ -170,7 +170,8 @@ const WriteStory = ({ onReturn }) => {
         text: newContent,
         currentContent: formData.thoughts
       }, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       setPendingContent(response.data.regenerated_text);
     } catch (error) {
@@ -389,7 +390,8 @@ const WriteStory = ({ onReturn }) => {
         date: currentDateTime,
         messages: chatMessages
       }, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
 
       if (response.data.id) {
@@ -442,7 +444,8 @@ const WriteStory = ({ onReturn }) => {
         conversationId: conversationId,
         voice_response: chatMode === 'voice' // 如果是语音模式，请求语音回复
       }, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       // Extract the assistant's response from the API response
@@ -496,7 +499,8 @@ const WriteStory = ({ onReturn }) => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/asr/start`, {}, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       console.log('📡 ASR开始响应:', response.data);
@@ -545,7 +549,8 @@ const WriteStory = ({ onReturn }) => {
     try {
       const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/asr/stop`, {}, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       console.log('📡 ASR停止响应:', response.data);
@@ -669,7 +674,8 @@ const WriteStory = ({ onReturn }) => {
         conversationId: conversationId,
         voice_response: true // 语音模式始终请求语音回复
       }, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       console.log('✅ AI响应:', response.data);

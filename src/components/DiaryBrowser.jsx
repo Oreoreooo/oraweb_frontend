@@ -46,7 +46,8 @@ const DiaryBrowser = () => {
       console.log('🔐 请求头信息:', getAuthHeaders());
       
       const response = await axios.get(`${API_BASE_URL}/api/conversations`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       console.log('✅ API响应成功!');
@@ -94,7 +95,8 @@ const DiaryBrowser = () => {
         sourceType: 'diary',
         sourceId: diary.id
       }, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       if (response.data.success) {
@@ -207,7 +209,8 @@ const DiaryBrowser = () => {
     try {
       const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       await axios.delete(`${API_BASE_URL}/api/conversations/${diaryId}`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
+        withCredentials: true
       });
       
       // Reload diaries
@@ -373,7 +376,8 @@ const DiaryBrowser = () => {
           content: editingDiary.content
         },
         {
-          headers: getAuthHeaders()
+          headers: getAuthHeaders(),
+          withCredentials: true
         }
       );
 

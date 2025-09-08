@@ -37,7 +37,9 @@ const Auth = ({ mode = 'login' }) => {
     try {
       setLoading(true);
       const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
-      const response = await axios.get(`${API_BASE_URL}/api/auth/captcha/email?email=${formData.email}`);
+      const response = await axios.get(`${API_BASE_URL}/api/auth/captcha/email?email=${formData.email}`, {
+        withCredentials: true
+      });
       if (response.data.code === 200) {
         setCaptchaSent(true);
         setError('');
@@ -64,6 +66,8 @@ const Auth = ({ mode = 'login' }) => {
         response = await axios.post(`${API_BASE_URL}/api/auth/login`, {
           email: formData.email,
           password: formData.password
+        }, {
+          withCredentials: true
         });
       } else {
         // Register request
@@ -72,6 +76,8 @@ const Auth = ({ mode = 'login' }) => {
           password: formData.password,
           username: formData.username,
           captcha: formData.captcha
+        }, {
+          withCredentials: true
         });
       }
 
