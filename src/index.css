@@ -1,24 +1,141 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* 备用样式 - 不使用 Tailwind */
 
-/* 你的自定义样式 */
-@layer components {
-  .app {
-    @apply bg-white overflow-hidden relative isolate;
+/* 重置样式 */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* App 样式 */
+.app {
+  background-color: white;
+  overflow: hidden;
+  position: relative;
+  isolation: isolate;
+  min-height: 100vh;
+}
+
+/* Hero pattern 样式 */
+.hero-pattern {
+  position: absolute;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+}
+
+.hero-pattern svg {
+  position: absolute;
+  top: 0;
+  left: max(50%, 25rem);
+  height: 64rem;
+  width: 128rem;
+  transform: translateX(-50%);
+  stroke: #e5e7eb;
+  mask-image: radial-gradient(64rem 64rem at top, white, transparent);
+}
+
+.pattern-bg {
+  overflow: visible;
+  fill: #f9fafb;
+}
+
+/* 布局工具类 */
+.container {
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.max-w-7xl {
+  max-width: 80rem;
+}
+
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.px-6 {
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.py-24 {
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+.grid {
+  display: grid;
+}
+
+.grid-cols-1 {
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.gap-x-8 {
+  column-gap: 2rem;
+}
+
+.gap-y-16 {
+  row-gap: 4rem;
+}
+
+/* 文字样式 */
+.text-4xl {
+  font-size: 2.25rem;
+  line-height: 2.5rem;
+}
+
+.font-bold {
+  font-weight: 700;
+}
+
+.text-gray-900 {
+  color: #111827;
+}
+
+.text-gray-600 {
+  color: #4b5563;
+}
+
+.text-indigo-600 {
+  color: #4f46e5;
+}
+
+/* 响应式 */
+@media (min-width: 1024px) {
+  .lg\\:px-8 {
+    padding-left: 2rem;
+    padding-right: 2rem;
   }
   
-  .hero-pattern {
-    @apply absolute inset-0 -z-10 overflow-hidden;
+  .lg\\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   
-  .hero-pattern svg {
-    @apply absolute top-0 h-256 w-512 -translate-x-1/2 stroke-gray-200;
-    left: max(50%, 25rem);
-    mask-image: radial-gradient(64rem 64rem at top, white, transparent);
+  .lg\\:gap-y-10 {
+    row-gap: 2.5rem;
+  }
+}
+
+@media (min-width: 640px) {
+  .sm\\:text-5xl {
+    font-size: 3rem;
+    line-height: 1;
   }
   
-  .pattern-bg {
-    @apply overflow-visible fill-gray-50;
+  .sm\\:py-32 {
+    padding-top: 8rem;
+    padding-bottom: 8rem;
   }
 }
