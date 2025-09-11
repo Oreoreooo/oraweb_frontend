@@ -9,7 +9,7 @@ const apiUrlFromParam = urlParams.get('api_url');
 const apiUrlFromStorage = localStorage.getItem('CUSTOM_API_URL');
 
 // 选择API URL
-let apiBaseUrl = apiUrlFromParam || apiUrlFromStorage || 'https://854c8e371cc0.ngrok-free.app';
+let apiBaseUrl = apiUrlFromParam || apiUrlFromStorage || 'https://dc1406c09ca8.ngrok-free.app';
 
 console.log('🔍 API URL sources:');
 console.log('  - From URL param:', apiUrlFromParam);

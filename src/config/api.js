@@ -12,7 +12,7 @@ console.log('📊 isDevelopment:', isDevelopment);
 // 不同环境的API URL
 const API_URLS = {
   development: 'http://localhost:5000',
-  production: 'https://854c8e371cc0.ngrok-free.app'
+  production: 'https://dc1406c09ca8.ngrok-free.app'
 };
 
 // 自动选择API URL
