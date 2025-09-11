@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Auth.css';
+import { API_BASE_URL } from '../config/api';
 
 const Auth = ({ mode = 'login' }) => {
   const [isLogin, setIsLogin] = useState(mode === 'login');
@@ -36,7 +37,6 @@ const Auth = ({ mode = 'login' }) => {
     
     try {
       setLoading(true);
-      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.get(`${API_BASE_URL}/api/auth/captcha/email?email=${formData.email}`, {
         withCredentials: true
       });
@@ -58,7 +58,6 @@ const Auth = ({ mode = 'login' }) => {
     setError('');
 
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       let response;
       
       if (isLogin) {
