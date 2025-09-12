@@ -11,9 +11,9 @@ class VoiceActivityDetector {
     this.onSpeechDetected = null;
     this.onAudioLevel = null; // 添加音频级别回调
     
-    // VAD 参数
-    this.silenceThreshold = 0.015; // 静音阈值 (降低一点，避免误检测)
-    this.speechThreshold = 0.02; // 语音开始阈值 (提高一点，需要更明显的语音)
+    // VAD 参数 - 根据实际音频级别调整阈值
+    this.silenceThreshold = 0.002; // 静音阈值 (低于正常说话)
+    this.speechThreshold = 0.004; // 语音开始阈值 (低于你的实际说话音频级别)
     this.silenceDuration = 1500; // 静音持续时间（毫秒）(增加到1.5秒，确保用户真的说完了)
     this.speechStartDelay = 200; // 语音开始延迟（毫秒）(增加延迟，减少误触发)
     
@@ -118,7 +118,8 @@ class VoiceActivityDetector {
   detectVoiceActivity() {
     if (!this.isListening || !this.analyser) return;
 
-    this.analyser.getByteFrequencyData(this.dataArray);
+    // 获取时域音频数据（更适合语音检测）
+    this.analyser.getByteTimeDomainData(this.dataArray);
     
     // 计算音频级别
     const audioLevel = this.calculateAudioLevel();
@@ -163,6 +164,11 @@ class VoiceActivityDetector {
           this.speechTimer = null;
         }, this.speechStartDelay);
       }
+    }
+    
+    // 调试语音检测条件
+    if (now - this.lastLogTime > 1000) {
+      console.log(`🔍 语音检测状态: isSpeaking=${this.isSpeaking}, audioLevel=${audioLevel.toFixed(4)}, speechThreshold=${this.speechThreshold}, speechTimer=${!!this.speechTimer}`);
     }
     
     // 检测语音结束
@@ -211,11 +217,16 @@ class VoiceActivityDetector {
   calculateAudioLevel() {
     if (!this.dataArray) return 0;
     
+    // 对于时域数据，计算RMS（均方根）值
     let sum = 0;
     for (let i = 0; i < this.dataArray.length; i++) {
-      sum += this.dataArray[i];
+      // 将字节值转换为-1到1的范围
+      const sample = (this.dataArray[i] - 128) / 128;
+      sum += sample * sample;
     }
-    return sum / this.dataArray.length / 255;
+    
+    // 返回RMS值
+    return Math.sqrt(sum / this.dataArray.length);
   }
 
   // 设置回调函数

@@ -165,7 +165,6 @@ const WriteStory = ({ onReturn }) => {
     if (!checkAuthWithRedirect()) return;
     setIsRegenerating(true);
     try {
-      const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/regenerate-text`, {
         text: newContent,
         currentContent: formData.thoughts
@@ -193,6 +192,16 @@ const WriteStory = ({ onReturn }) => {
         setIsContinuousListening(false);
         isContinuousListeningRef.current = false;
         
+        console.log('🎤 开始初始化VAD...');
+        
+        // 检查麦克风权限
+        try {
+          const permissionStatus = await navigator.permissions.query({name: 'microphone'});
+          console.log('🎤 麦克风权限状态:', permissionStatus.state);
+        } catch (e) {
+          console.log('⚠️ 无法查询麦克风权限:', e.message);
+        }
+        
         vadRef.current = new VoiceActivityDetector();
         await vadRef.current.init();
         
@@ -208,6 +217,7 @@ const WriteStory = ({ onReturn }) => {
             console.log('🎤 触发开始录制, 当前录制状态ref:', isRecordingRef.current);
             // 只有在没有录制的情况下才开始录制
             if (!isRecordingRef.current) {
+              console.log('✅ 开始录制语音');
               startRecording();
             } else {
               console.log('⚠️ 已经在录制中，跳过重复开始录制');
@@ -224,6 +234,7 @@ const WriteStory = ({ onReturn }) => {
             console.log('🔇 触发停止录制, 当前录制状态ref:', isRecordingRef.current);
             // 使用 ref 检查录制状态
             if (isRecordingRef.current) {
+              console.log('✅ 停止录制语音');
               stopRecording();
             } else {
               console.log('❌ 录制状态ref显示未在录制中');
@@ -497,7 +508,6 @@ const WriteStory = ({ onReturn }) => {
     console.log('🎤 开始录制请求...');
     
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/asr/start`, {}, {
         headers: getAuthHeaders(),
         withCredentials: true
@@ -547,7 +557,6 @@ const WriteStory = ({ onReturn }) => {
     isRecordingRef.current = false;
     
     try {
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/asr/stop`, {}, {
         headers: getAuthHeaders(),
         withCredentials: true
@@ -569,13 +578,16 @@ const WriteStory = ({ onReturn }) => {
           }, 1000);
         }
       } else if (response.data.text && response.data.text.trim()) {
-        setTranscribedText(response.data.text);
         console.log('✅ 录制完成，转录文本:', response.data.text);
+        console.log('📝 转录文本长度:', response.data.text.length);
+        console.log('📝 转录文本内容:', JSON.stringify(response.data.text));
         
         // 将转录文本作为用户消息发送
+        console.log('🚀 调用 handleVoiceMessage 处理转录文本');
         await handleVoiceMessage(response.data.text);
       } else {
-        console.log('⚠️ ASR停止成功，但没有返回转录文本，可能是录制时间太短或无有效语音');
+        console.log('⚠️ ASR停止成功，但没有返回转录文本');
+        console.log('📊 响应数据:', JSON.stringify(response.data));
         setMicError('No speech detected. Please try speaking louder or longer.');
         
         // 如果是连续监听模式，重新开始监听
@@ -626,7 +638,7 @@ const WriteStory = ({ onReturn }) => {
       
       setIsRecording(false);
       isRecordingRef.current = false; // 重置 ref
-      console.log('停止连续语音模式');
+      console.log('🛑 停止连续语音模式');
     } else {
       // 开始连续监听模式
       if (!vadRef.current) {
@@ -637,11 +649,16 @@ const WriteStory = ({ onReturn }) => {
       setIsContinuousListening(true);
       isContinuousListeningRef.current = true; // 更新 ref
       setMicError('');
-      console.log('开始连续语音模式');
+      console.log('✅ 开始连续语音模式');
+      console.log('🎧 VAD状态:', vadRef.current ? 'VAD已初始化' : 'VAD未初始化');
     }
   };
 
   const handleVoiceMessage = async (transcribedText) => {
+    console.log('🎯 handleVoiceMessage 被调用，参数:', transcribedText);
+    console.log('🎯 参数类型:', typeof transcribedText);
+    console.log('🎯 参数长度:', transcribedText ? transcribedText.length : 'null');
+    
     if (!transcribedText || !transcribedText.trim()) {
       console.log('❌ 转录文本为空或无效，跳过处理');
       
@@ -658,17 +675,20 @@ const WriteStory = ({ onReturn }) => {
     }
     
     console.log('🗣️ 处理语音消息:', transcribedText);
+    console.log('💬 当前聊天消息数量:', chatMessages.length);
     
     // Add user message to chat
     const userMessage = { role: 'user', content: transcribedText };
     const updatedMessages = [...chatMessages, userMessage];
+    console.log('📝 添加用户消息到聊天，新消息数量:', updatedMessages.length);
+    console.log('📝 新用户消息:', userMessage);
+    
     setChatMessages(updatedMessages);
     setIsLoading(true);
     
     try {
       console.log('📡 发送消息给AI...');
       // Call our backend API with voice response
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const response = await axios.post(`${API_BASE_URL}/api/chat`, {
         messages: updatedMessages,
         conversationId: conversationId,
@@ -752,7 +772,6 @@ const WriteStory = ({ onReturn }) => {
       
       // 创建带认证的音频URL
       const token = getAccessToken();
-      const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
       const audioUrl = `${API_BASE_URL}/api/audio/${encodeURIComponent(audioPath)}?token=${token}`;
       console.log('Audio URL:', audioUrl); // 调试日志
       
